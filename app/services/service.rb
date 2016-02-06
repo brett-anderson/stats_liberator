@@ -2,12 +2,10 @@
 module Service
   extend ActiveSupport::Concern
 
+  # When a gourmet service object is invoked using Object.call(arg1, arg2, ...)
+  # Initialize that object using all args
   included do
     def self.call(*args)
-      new(*args).call
-    end
-
-    def self.call!(*args)
       new(*args).call
     end
   end

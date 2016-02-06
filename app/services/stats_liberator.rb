@@ -1,17 +1,20 @@
 require 'service'
+require 'open-uri'
 
 class StatsLiberator
   include Service
 
+  # Gourmet Service Object.
+  # Invoke using AdvanceRounds.call
   def initialize
+
 
   end
 
+  # Advance each round
   def call
-
-   require 'open-uri'
-   doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/1/"))
-   player = Player.create(html: doc.to_s)
-   player.save
+    doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/1/"))
+    player = Player.create(html: doc.to_s)
+    player.save
   end
 end
