@@ -1,5 +1,6 @@
-class StatsLiberator
+require 'service'
 
+class StatsLiberator
   include Service
 
   def initialize
@@ -11,6 +12,6 @@ class StatsLiberator
    require 'open-uri'
    doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/1/"))
    player = Player.create(html: doc.to_s)
-   player.save  
+   player.save
   end
 end
