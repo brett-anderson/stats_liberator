@@ -1,7 +1,7 @@
 require 'service'
 require 'open-uri'
 
-class StatsLiberator
+class Scraper
   include Service
 
   # Gourmet Service Object.
