@@ -1,0 +1,5 @@
+development:
+  host: localhost
+  adapter: postgresql
+  encoding: utf8
+  dababase: stats
