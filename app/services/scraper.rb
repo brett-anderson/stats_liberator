@@ -15,6 +15,10 @@ class Scraper
 
     @missing_ids = @entire_ids - @yahoo_ids
 
+    Player.where(height: nil).each do |player|
+      player.generate_columns_from_html
+      player.save
+    end
 
   end
 
