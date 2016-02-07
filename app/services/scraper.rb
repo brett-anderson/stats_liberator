@@ -23,10 +23,11 @@ class Scraper
 
       player.name = doc.at_css('.player-info h1') ? doc.at_css('.player-info h1').attributes['data-name'].value : nil
       player.yahoo_id = id
+      Rails.logger.info {id: id, name: player.name}
       if player.name && player.save
         Rails.logger.info "#{player.name} saved."
       else
-        Rails.logger.info "failed to save saved."
+        Rails.logger.info "failed to save."
       end
       iterations = iterations + 1
       id = id + 1
