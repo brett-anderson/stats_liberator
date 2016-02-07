@@ -22,7 +22,8 @@ class Scraper
       player = Player.create(html: doc.to_s)
       player.name = doc.at_css('.player-info h1').attributes['data-name'].value
       player.yahoo_id = id
-      player.save
+      if player.save
+        Rails.logger.info "#{Player.name} saved."
       iterations = iterations + 1
       id = id + 1
       sleep 10.seconds
