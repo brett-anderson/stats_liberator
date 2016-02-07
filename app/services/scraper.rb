@@ -24,6 +24,7 @@ class Scraper
       player.yahoo_id = id
       if player.save
         Rails.logger.info "#{Player.name} saved."
+      end
       iterations = iterations + 1
       id = id + 1
       sleep 10.seconds
