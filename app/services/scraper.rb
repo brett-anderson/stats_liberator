@@ -27,6 +27,7 @@ class Scraper
       if players_processed < 40
         player = find_player(missing_id)
         players_processed = players_processed + 1 if player
+        Rails.logger.info "PLAYER ADDED: #{player.name}" if player
         sleep 5.seconds
       end
     end
