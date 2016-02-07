@@ -9,7 +9,7 @@
   - @players.each do |player|
     %tr
       %td
-        %a{href: "http://sports.yahoo.com/nhl/players/#{player.yahoo_id}/"}= player.name
+        %a{href: "http://sports.yahoo.com/nhl/players/#{player.yahoo_id}/"}= player.name, player.yahoo_id
       %td
         = player.height
       %td
