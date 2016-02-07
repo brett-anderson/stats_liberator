@@ -23,20 +23,19 @@ class Scraper
     id = id + 1
     players_processed = 0
 
-    @missing_ids.each do |id|
-      player = find_player(id)
-      players_processed = players_processed + 1 if player
-      sleep 15.seconds
+    @missing_ids.each do |missing_id|
+      if players_processed < 40
+        player = find_player(missing_id)
+        players_processed = players_processed + 1 if player
+        sleep 5.seconds
+      end
     end
 
-
-
-    while players_processed < 15 && id < 7500
+    while players_processed < 40 && id < 7500
       current_player = Player.where(id: id)
-
       player = find_player(id) if current_player.count == 0
       players_processed = players_processed + 1 if player
-      sleep 15.seconds
+      sleep 5.seconds
       id = id + 1
     end
   end
