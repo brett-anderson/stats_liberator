@@ -17,12 +17,14 @@ class Player < ActiveRecord::Base
   private
 
   def height_query(html=self.html)
-    Nokogiri::HTML(html).at_css('.bio .height dd').text
+    dd = Nokogiri::HTML(html).at_css('.bio .height dd')
+    dd.text if dd
 
   end
 
   def weight_query(html=self.html)
-    Nokogiri::HTML(html).at_css('.bio .weight dd').text
+    dd = Nokogiri::HTML(html).at_css('.bio .weight dd')
+    dd.text if dd
   end
 
   def name_query(html=self.html)

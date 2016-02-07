@@ -15,13 +15,6 @@ class Scraper
 
     @missing_ids = @entire_ids - @yahoo_ids
 
-    Player.where(height: nil ).find_in_batches(batch_size: 5) do |player_batch|
-      player_batch.each do | player |
-        player.generate_columns_from_html
-        player.save
-      end
-    end
-
   end
 
   def call
