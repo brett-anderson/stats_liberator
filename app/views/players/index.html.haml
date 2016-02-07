@@ -4,12 +4,21 @@
 %table.table.table-striped
   %tr
     %th.span1 Name
-    %th.span1 height
-    %th.span1 weight
+    %th.span1 Number
+    %th.span1 Position
+    %th.span1 Team
+    %th.span1 Height
+    %th.span1 Weight
   - @players.each do |player|
     %tr
       %td
         %a{href: "http://sports.yahoo.com/nhl/players/#{player.yahoo_id}/"}= "#{player.name}, #{player.yahoo_id}"
+      %td
+        = player.number
+      %td
+        = player.position
+      %td
+        = player.team
       %td
         = player.height
       %td

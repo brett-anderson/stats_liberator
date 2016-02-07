@@ -11,20 +11,23 @@ class Player < ActiveRecord::Base
     html: html.to_s,
     height: height_query(html),
     weight: weight_query(html),
-    name:   name_query(html)
+    name:   name_query(html),
+    position: position_query(html),
+    number: number_query(html),
+    team: team_query(html)
     )
     unless worked
       html = Nokogiri::HTML(open(self.yahoo_link))
       self.update(
-        html: html.to_s,
-        height: height_query(html),
-        weight: weight_query(html),
-        name: name_query(html)
+      height: height_query(html),
+      weight: weight_query(html),
+      name:   name_query(html),
+      position: position_query(html),
+      number: number_query(html),
+      team: team_query(html)
       )
     end
   end
-
-  protected
 
   def height_query(html)
     dd = html.at_css('.bio .height dd')
@@ -42,8 +45,20 @@ class Player < ActiveRecord::Base
     doc.text if doc
   end
 
+  def position_query(html)
+    html.at_css('.team-info').text.strip.split(',')[1].strip
+  end
+
+  def number_query(html)
+    html.at_css('.team-info').text.strip.split(',')[0][1..-1]
+  end
+
+  def team_query(html)
+    html.at_css('.team-info').text.strip.split(',')[2].strip
+  end
+
   def yahoo_link
-      "http://sports.yahoo.com/nhl/players/#{self.yahoo_id}/"
+    "http://sports.yahoo.com/nhl/players/#{self.yahoo_id}/"
   end
 
 end

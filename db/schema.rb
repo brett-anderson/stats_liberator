@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160207063247) do
+ActiveRecord::Schema.define(version: 20160207200054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,9 @@ ActiveRecord::Schema.define(version: 20160207063247) do
     t.integer  "yahoo_id"
     t.string   "height"
     t.string   "weight"
+    t.string   "team"
+    t.integer  "number"
+    t.string   "position"
   end
 
 end
