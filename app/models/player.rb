@@ -24,7 +24,7 @@ class Player < ActiveRecord::Base
     end
   end
 
-  private
+  protected
 
   def height_query(html)
     dd = html.at_css('.bio .height dd')
