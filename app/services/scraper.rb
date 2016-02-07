@@ -7,23 +7,24 @@ class Scraper
   # Gourmet Service Object.
   # Invoke using AdvanceRounds.call
   def initialize
-
-
+    Player.where(name: nil).destroy_all
+    @id = Player.last ? Player.last.id : 1
   end
 
   def call
-    Player.where(name: nil).destroy_all
 
-    id = 1
+    id = @id
+    id = id + 1
     players_processed = 0
 
-    while players_processed < 40
-      player = Player.where(id: id)
+    while players_processed < 30 && id < 8000
+      current_player = Player.where(id: id)
 
-      unless player.count > 0
-        player = find_player(id)
+      player = find_player(id) if current_player.count == 0
+
+      if player
         Rails.logger.info "id: #{id}, player: #{player.name}"
-        if player.name && player.save
+        if player && player.name && player.save
           Rails.logger.info "#{player.name} saved."
         else
           Rails.logger.info "failed to save with id: #{id}."
@@ -38,7 +39,12 @@ class Scraper
   private
 
   def find_player(id)
-    doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{id}/"))
+    begin
+      doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{id}/"))
+    rescue OpenURI::HTTPError
+      Rails.logger.info "PLAYER NOT FOUND AT #{id}"
+      return nil
+    end
     player = Player.create(html: doc.to_s)
     player.name = doc.at_css('.player-info h1') ? doc.at_css('.player-info h1').attributes['data-name'].value : nil
     player.yahoo_id = id
