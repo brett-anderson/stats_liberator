@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-gem 'whenever'
 gem 'pg'
 gem 'haml'
 gem 'nokogiri'
@@ -39,4 +38,3 @@ gem 'rails_12factor', group: :production
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
