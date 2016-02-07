@@ -35,6 +35,7 @@ class Scraper
       current_player = Player.where(id: id)
       player = find_player(id) if current_player.count == 0
       players_processed = players_processed + 1 if player
+      Rails.logger.info "PLAYER ADDED: #{player.name}" if player
       sleep 5.seconds
       id = id + 1
     end
