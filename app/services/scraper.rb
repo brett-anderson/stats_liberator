@@ -42,6 +42,7 @@ class Scraper
     player = Player.create(html: doc.to_s)
     player.name = doc.at_css('.player-info h1') ? doc.at_css('.player-info h1').attributes['data-name'].value : nil
     player.yahoo_id = id
+    player
   end
 
 end
