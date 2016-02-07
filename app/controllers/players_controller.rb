@@ -4,5 +4,6 @@ class PlayersController < ApplicationController
   end
   def show
    @player = Player.find(params[:id])
+   @names = Player.all.pluck(:name).uniq
   end
 end
