@@ -21,7 +21,7 @@ class Scraper
       doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{id}/"))
       player = Player.create(html: doc.to_s)
 
-      player.name = doc.at_css('.player-info h1').attributes ? doc.at_css('.player-info h1').attributes['data-name'].value : nil
+      player.name = doc.at_css('.player-info h1') ? doc.at_css('.player-info h1').attributes['data-name'].value : nil
       player.yahoo_id = id
       if player.name && player.save
         Rails.logger.info "#{player.name} saved."
