@@ -6,27 +6,39 @@ class Player < ActiveRecord::Base
 
 
   def generate_columns_from_html
-    html = Nokogiri::HTML(open(self.yahoo_link))
-    worked = self.update(
-    html: html.to_s,
-    height: height_query(html),
-    weight: weight_query(html),
-    name:   name_query(html),
-    position: position_query(html),
-    number: number_query(html),
-    team: team_query(html)
-    )
-    unless worked
+    begin
+      html = Nokogiri::HTML(self.html)
+      worked = self.update(
+        html: html.to_s,
+        height: height_query(html),
+        weight: weight_query(html),
+        name:   name_query(html),
+        position: position_query(html),
+        number: number_query(html),
+        team: team_query(html))
+      unless worked
+        html = Nokogiri::HTML(open(self.yahoo_link))
+        self.update(
+          height: height_query(html),
+          weight: weight_query(html),
+          name:   name_query(html),
+          position: position_query(html),
+          number: number_query(html),
+          team: team_query(html))
+      end
+      Rails.logger.info "Processed #{self.name}" if worked
+    rescue SyntaxError::NoMethodError
       html = Nokogiri::HTML(open(self.yahoo_link))
-      self.update(
-      height: height_query(html),
-      weight: weight_query(html),
-      name:   name_query(html),
-      position: position_query(html),
-      number: number_query(html),
-      team: team_query(html)
-      )
+      worked = self.update(
+        height: height_query(html),
+        weight: weight_query(html),
+        name:   name_query(html),
+        position: position_query(html),
+        number: number_query(html),
+        team: team_query(html))
+      Rails.logger.info "Processed #{self.name}" if worked
     end
+
   end
 
   def height_query(html)
