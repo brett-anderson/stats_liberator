@@ -21,9 +21,10 @@ class Scraper
       doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{id}/"))
       player = Player.create(html: doc.to_s)
       player.name = doc.at_css('.player-info h1').attributes['data-name'].value
-      player.yahoo_id = i
+      player.yahoo_id = id
       player.save
       iterations = iterations + 1
+      id = id + 1
       sleep 10.seconds
     end
   end

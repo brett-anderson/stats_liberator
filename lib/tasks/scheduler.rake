@@ -1,6 +1,6 @@
 desc "Scrape for players"
 task :scrape_yahoo => :environment do
-  puts "Scraping Players..."
-  
-  puts "done."
+  Rails.logger.debug "Scraping Players..."
+  Scraper.call
+  Rails.logger.debug "done."
 end
