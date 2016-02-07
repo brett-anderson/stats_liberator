@@ -6,14 +6,15 @@ class Player < ActiveRecord::Base
 
 
   def generate_columns_from_html
-    html = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{self.yahoo_id}/"))
+    html = Nokogiri::HTML(self.yahoo_link)
     worked = self.update(
+    html: html.to_s,
     height: height_query(html),
     weight: weight_query(html),
     name:   name_query(html)
     )
     unless worked
-      html = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{self.yahoo_id}/"))
+      html = Nokogiri::HTML(self.yahoo_link)
       self.update(
         html: html.to_s,
         height: height_query(html),
@@ -41,5 +42,8 @@ class Player < ActiveRecord::Base
     doc.text if doc
   end
 
+  def yahoo_link
+      "http://sports.yahoo.com/nhl/players/#{self.yahoo_id}/"
+  end
 
 end
