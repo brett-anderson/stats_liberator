@@ -25,17 +25,8 @@ class Scraper
 
     @missing_ids.each do |id|
       player = find_player(id)
-
-      if player
-        Rails.logger.info "id: #{id}, player: #{player.name}"
-        if player.name && player.save
-          Rails.logger.info "#{player.name} saved."
-        else
-          Rails.logger.info "failed to save with id: #{id}."
-        end
-        sleep 15.seconds
-        players_processed = players_processed + 1
-      end
+      players_processed = players_processed + 1 if player
+      sleep 15.seconds
     end
 
 
@@ -44,17 +35,8 @@ class Scraper
       current_player = Player.where(id: id)
 
       player = find_player(id) if current_player.count == 0
-
-      if player
-        Rails.logger.info "id: #{id}, player: #{player.name}"
-        if player && player.name && player.save
-          Rails.logger.info "#{player.name} saved."
-        else
-          Rails.logger.info "failed to save with id: #{id}."
-        end
-        sleep 15.seconds
-        players_processed = players_processed + 1
-      end
+      players_processed = players_processed + 1 if player
+      sleep 15.seconds
       id = id + 1
     end
   end
@@ -63,12 +45,13 @@ class Scraper
 
   def find_player(id)
     begin
-      doc = Nokogiri::HTML(open("http://sports.yahoo.com/nhl/players/#{id}/"))
+    player = Player.create(yahoo_id: id)
+    player.generate_columns_from_html
     rescue OpenURI::HTTPError
       Rails.logger.info "PLAYER NOT FOUND AT #{id}"
       return nil
     end
-    player = Player.create(html: doc.to_s, yahoo_id: id)
+    player.save
   end
 
 end
