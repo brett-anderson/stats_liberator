@@ -6,7 +6,7 @@ class Player < ActiveRecord::Base
 
 
   def generate_columns_from_html
-    html = Nokogiri::HTML(self.yahoo_link)
+    html = Nokogiri::HTML(open(self.yahoo_link))
     worked = self.update(
     html: html.to_s,
     height: height_query(html),
@@ -14,7 +14,7 @@ class Player < ActiveRecord::Base
     name:   name_query(html)
     )
     unless worked
-      html = Nokogiri::HTML(self.yahoo_link)
+      html = Nokogiri::HTML(open(self.yahoo_link))
       self.update(
         html: html.to_s,
         height: height_query(html),
