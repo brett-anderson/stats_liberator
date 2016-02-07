@@ -47,7 +47,7 @@ class Scraper
 
 
 
-    while players_processed < 30 && id < 8000
+    while players_processed < 15 && id < 7500
       current_player = Player.where(id: id)
 
       player = find_player(id) if current_player.count == 0
