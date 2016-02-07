@@ -7,36 +7,19 @@ class Scraper
   # Gourmet Service Object.
   # Invoke using AdvanceRounds.call
   def initialize
-    Player.where(name: nil).destroy_all
-    @id = Player.last ? Player.last.id : 1
-
-    @yahoo_ids = Player.all.order(:yahoo_id).pluck(:yahoo_id).uniq
-    @entire_ids =*(1..@yahoo_ids.last)
-
-    @missing_ids = @entire_ids - @yahoo_ids
-
+    last_player = Player.order(:yahoo_id).last
+    @id = last_player ? last_player.yahoo_id : 1
   end
 
   def call
 
-    id = @id
-    id = id + 1
-    players_processed = 0
+    id = @id + 1
 
-    @missing_ids.each do |missing_id|
-      if players_processed < 40
-        player = find_player(missing_id)
-        players_processed = players_processed + 1 if player
-        Rails.logger.info "PLAYER ADDED: #{player.name}" if player
-        sleep 5.seconds
-      end
-    end
-
-    while players_processed < 40 && id < 7500
+    while id < 7500
       current_player = Player.where(id: id)
       player = find_player(id) if current_player.count == 0
-      players_processed = players_processed + 1 if player
       Rails.logger.info "PLAYER ADDED: #{player.name}" if player
+      Rails.logger.info "no player added :(, id: #{id}" unless player
       sleep 5.seconds
       id = id + 1
     end

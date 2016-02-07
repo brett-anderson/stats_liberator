@@ -1,6 +1,6 @@
 class Player < ActiveRecord::Base
   require 'open-uri'
-  validates :name, uniqueness: true
+  validates :yahoo_id, uniqueness: true
 
   after_create :generate_columns_from_html
 
