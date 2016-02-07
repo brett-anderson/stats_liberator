@@ -31,6 +31,7 @@ class Scraper
         sleep 15.seconds
         players_processed = players_processed + 1
       end
+      id = id + 1
     end
   end
 
