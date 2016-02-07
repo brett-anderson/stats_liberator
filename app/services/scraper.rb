@@ -9,6 +9,13 @@ class Scraper
   def initialize
     Player.where(name: nil).destroy_all
     @id = Player.last ? Player.last.id : 1
+
+    @yahoo_ids = Player.all.order(:yahoo_id).pluck(:yahoo_id).uniq
+    @entire_ids =*(1..@yahoo_ids.last)
+
+    @missing_ids = @entire_ids - @yahoo_ids
+
+
   end
 
   def call
@@ -16,6 +23,23 @@ class Scraper
     id = @id
     id = id + 1
     players_processed = 0
+
+    @missing_ids.each do |id|
+      player = find_player(id)
+
+      if player
+        Rails.logger.info "id: #{id}, player: #{player.name}"
+        if player.name && player.save
+          Rails.logger.info "#{player.name} saved."
+        else
+          Rails.logger.info "failed to save with id: #{id}."
+        end
+        sleep 15.seconds
+        players_processed = players_processed + 1
+      end
+    end
+
+
 
     while players_processed < 30 && id < 8000
       current_player = Player.where(id: id)
@@ -45,10 +69,7 @@ class Scraper
       Rails.logger.info "PLAYER NOT FOUND AT #{id}"
       return nil
     end
-    player = Player.create(html: doc.to_s)
-    player.name = doc.at_css('.player-info h1') ? doc.at_css('.player-info h1').attributes['data-name'].value : nil
-    player.yahoo_id = id
-    player
+    player = Player.create(html: doc.to_s, yahoo_id: id)
   end
 
 end
