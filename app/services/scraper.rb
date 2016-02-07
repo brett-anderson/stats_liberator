@@ -13,7 +13,7 @@ class Scraper
 
   def call
 
-    id = @id + 1
+    id = @id
 
     while id < 7500
       current_player = Player.where(id: id)
