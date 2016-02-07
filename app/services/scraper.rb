@@ -52,7 +52,7 @@ class Scraper
       Rails.logger.info "PLAYER NOT FOUND AT #{id}"
       return nil
     end
-    player.save
+    player if player.save
   end
 
 end
