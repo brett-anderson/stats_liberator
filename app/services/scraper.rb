@@ -18,7 +18,7 @@ class Scraper
       Rails.logger.info "PLAYER ADDED: #{player.name}" if player
       Rails.logger.info "no player added :(, id: #{id}" if ! player && current_player.count == 0
       Rails.logger.info "Player found at #{id}, #{current_player.first.name}" if current_player.count > 0
-      sleep 2.seconds
+      sleep 2.seconds if player
       id = id + 1
     end
   end
