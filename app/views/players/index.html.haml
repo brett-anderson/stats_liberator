@@ -3,6 +3,7 @@
 = will_paginate @players
 %table.table.table-striped
   %tr
+    %th.span1 pic
     %th.span1 Name
     %th.span1 Number
     %th.span1 Position
@@ -11,6 +12,8 @@
     %th.span1 Weight
   - @players.each do |player|
     %tr
+      %td
+        = image_tag player.image, class: "img-rounded", width: "50px"
       %td
         %a{href: "http://sports.yahoo.com/nhl/players/#{player.yahoo_id}/"}= "#{player.name}, #{player.yahoo_id}"
       %td

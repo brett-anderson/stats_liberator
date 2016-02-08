@@ -2,18 +2,19 @@ class Player < ActiveRecord::Base
   require 'open-uri'
   validates :yahoo_id, uniqueness: true
 
-  after_create :generate_columns_from_html
+  after_create :get_stats
 
 
-  def generate_columns_from_html
+  def get_stats
     begin
-      html = Nokogiri::HTML(self.html)
+      html = self.new_html_object
       worked = self.update(
         html: html.to_s,
         height: height_query(html),
         weight: weight_query(html),
         name:   name_query(html),
         position: position_query(html),
+        image: image_query(html),
         number: number_query(html),
         team: team_query(html))
       unless worked
@@ -23,6 +24,7 @@ class Player < ActiveRecord::Base
           weight: weight_query(html),
           name:   name_query(html),
           position: position_query(html),
+          image: image_query(html),
           number: number_query(html),
           team: team_query(html))
       end
@@ -35,6 +37,7 @@ class Player < ActiveRecord::Base
         name:   name_query(html),
         position: position_query(html),
         number: number_query(html),
+        image: image_query(html),
         team: team_query(html))
       Rails.logger.info "Processed #{self.name}" if worked
     end
@@ -58,19 +61,32 @@ class Player < ActiveRecord::Base
   end
 
   def position_query(html)
-    html.at_css('.team-info').text.strip.split(',')[1].strip
+    html.at_css('.team-info') ? html.at_css('.team-info').text.strip.split(',')[1].strip : nil
   end
 
   def number_query(html)
-    html.at_css('.team-info').text.strip.split(',')[0][1..-1]
+    html.at_css('.team-info') ? html.at_css('.team-info').text.strip.split(',')[0][1..-1] : nil
   end
 
   def team_query(html)
-    html.at_css('.team-info').text.strip.split(',')[2].strip
+    html.at_css('.team-info') ? html.at_css('.team-info').text.strip.split(',')[2].strip : nil
+  end
+
+  def image_query(html)
+    html.at_css('.photo') ? html.at_css('.photo').attributes['style'].value[/http.*png/] : nil
   end
 
   def yahoo_link
     "http://sports.yahoo.com/nhl/players/#{self.yahoo_id}/"
   end
+
+  def new_html_object
+    Nokogiri::HTML(open(self.yahoo_link))
+  end
+
+  def html_object
+    Nokogiri::HTML(self.html)
+  end
+
 
 end

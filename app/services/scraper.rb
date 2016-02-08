@@ -13,14 +13,14 @@ class Scraper
 
   def call
 
-    id = @id
+    id = 3100
 
     while id < 7500
       current_player = Player.where(id: id)
       player = find_player(id) if current_player.count == 0
       Rails.logger.info "PLAYER ADDED: #{player.name}" if player
       Rails.logger.info "no player added :(, id: #{id}" unless player
-      sleep 5.seconds
+      sleep 2.seconds
       id = id + 1
     end
   end
@@ -30,7 +30,7 @@ class Scraper
   def find_player(id)
     begin
     player = Player.create(yahoo_id: id)
-    player.generate_columns_from_html
+    player.get_stats
     rescue OpenURI::HTTPError
       Rails.logger.info "PLAYER NOT FOUND AT #{id}"
       return nil

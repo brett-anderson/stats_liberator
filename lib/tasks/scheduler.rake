@@ -11,7 +11,7 @@ task :build_attrs => :environment do
   Player.where(height: nil ).find_in_batches(batch_size: 5) do |player_batch|
     player_batch.each do | player |
       Rails.logger.debug "Fixing #{player.name}"
-      player.generate_columns_from_html
+      player.get_stats
       player.save
     end
   end
