@@ -20,6 +20,7 @@ class Player < ActiveRecord::Base
       unless worked
         html = Nokogiri::HTML(open(self.yahoo_link))
         self.update(
+          html: html.to_s,
           height: height_query(html),
           weight: weight_query(html),
           name:   name_query(html),
@@ -32,6 +33,7 @@ class Player < ActiveRecord::Base
     rescue SyntaxError::NoMethodError
       html = Nokogiri::HTML(open(self.yahoo_link))
       worked = self.update(
+        html: html.to_s,
         height: height_query(html),
         weight: weight_query(html),
         name:   name_query(html),
