@@ -13,8 +13,8 @@ class Scraper
   end
 
   def call
-    id = Player.where(position: nil).where("yahoo_id > 497").order(:yahoo_id).first.yahoo_id
-    while id < 7500
+    id = Player.where(position: nil).where("yahoo_id > 7499").order(:yahoo_id).first.yahoo_id
+    while id < 10000
       current_player = Player.where(id: id)
       player = find_player(id) if current_player.count == 0
       Rails.logger.info "PLAYER ADDED: #{player.name}" if player
