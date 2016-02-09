@@ -34,7 +34,7 @@ class Scraper
     rescue OpenURI::HTTPError
       Rails.logger.info "HTTPError, yahoo_id: #{id}"
     end
-    player if player.save
+    player if player && player.save
   end
 
 end
