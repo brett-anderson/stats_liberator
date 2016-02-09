@@ -9,6 +9,10 @@ class AddMoreStats
 
   def call
 
+    Player.find_each(batch_size: 30) do | player |
+      player.get_stats unless player.image
+    end
+
   end
 
 
