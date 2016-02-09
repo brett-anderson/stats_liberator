@@ -13,7 +13,7 @@ class Scraper
   end
 
   def call
-    id = Player.where(position: nil).where("yahoo_id > 7499").order(:yahoo_id).first.yahoo_id
+    id = Player.where(position: nil).where("yahoo_id > 7498").order(:yahoo_id).first.yahoo_id
     while id < 10000
       current_player = Player.where(id: id)
       player = find_player(id) if current_player.count == 0

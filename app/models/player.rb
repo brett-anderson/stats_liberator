@@ -69,7 +69,6 @@ class Player < ActiveRecord::Base
   end
 
   def team_query(html)
-    Rails.logger.info
     if html.at_css('.team-info') && !html.at_css('.team-info').text && html.at_css('.team-info').text.strip.split(',')[2]
       html.at_css('.team-info').text.strip.split(',')[2].strip
     else
