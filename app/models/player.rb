@@ -69,7 +69,11 @@ class Player < ActiveRecord::Base
   end
 
   def team_query(html)
-    html.at_css('.team-info') && html.at_css('.team-info').text ? html.at_css('.team-info').text.strip.split(',')[2].strip : nil
+    if html.at_css('.team-info') && !html.at_css('.team-info').text.nil?
+      html.at_css('.team-info').text.strip.split(',')[2].strip
+    else
+      nil
+    end
   end
 
   def image_query(html)
