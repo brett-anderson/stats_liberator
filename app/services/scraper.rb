@@ -32,19 +32,9 @@ class Scraper
     player = Player.create(yahoo_id: id)
     player.get_stats
     rescue OpenURI::HTTPError
-      Rails.logger.info "PLAYER NOT FOUND AT #{id}"
-      return nil
-    rescue => e
-      Rails.logger.info "There was an error, #{e.to_s}"
-
+      Rails.logger.info "HTTPError, yahoo_id: #{id}"
     end
-
-      if player.save
-        return player
-      else
-        Rails.logger.info "There was an error, #{player.errors}"
-      end
-
+    player if player.save
   end
 
 end
