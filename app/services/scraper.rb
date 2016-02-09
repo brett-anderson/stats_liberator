@@ -8,10 +8,12 @@ class Scraper
   # Invoke using AdvanceRounds.call
   def initialize
 
+
+
   end
 
   def call
-    id = 1
+    id = Player.where(position: nil).order(:yahoo_id).first.yahoo_id
     while id < 7500
       current_player = Player.where(id: id)
       player = find_player(id) if current_player.count == 0
@@ -32,8 +34,13 @@ class Scraper
     rescue OpenURI::HTTPError
       Rails.logger.info "PLAYER NOT FOUND AT #{id}"
       return nil
+    rescue => e
+      Rails.logger.info "There was an error, #{e.to_s}"
+
     end
-    player if player.save
+
+      player.save ? player : Rails.logger.info "There was an error, #{player.errors}" 
+
   end
 
 end
