@@ -39,7 +39,11 @@ class Scraper
 
     end
 
-      player.save ? player : Rails.logger.info "There was an error, #{player.errors}" 
+      if player.save
+        return player
+      else
+        Rails.logger.info "There was an error, #{player.errors}"
+      end
 
   end
 
